@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Inserir/editar na tabela</title>
+  <link href="Content/bootstrap.css" rel="stylesheet" />
+  
+  <script src="Scripts/jquery-1.11.0.min.js"></script>
+  <script src="Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6">
+        <h2>Editando Tabela</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div id= "novaTabela">
+          <table id="productTable"
+          class="table table-bordered table-condensed table-striped">
+          <thead>
+            <tr>
+              <th>Editar</th>
+              <th>Tipo de Estabelecimento</th>
+              <th>Norte</th>
+              <th>Sul</th>
+              <th>Leste</th>
+              <th>Oeste</th>
+              <th>Centro</th>
+              <th>Deletar</th>
+            </tr>
+            <tr>
+              <td>
+                <button type='button' 
+                  onclick='productDisplay(this);' 
+                  class='btn btn-default'>
+                  <span class='glyphicon glyphicon-edit' />
+                </button>
+              </td>
+              <td> Padaria </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+            </tr>
+            <tr>
+              <td>
+                <button type='button' 
+                  onclick='productDisplay(this);' 
+                  class='btn btn-default'>
+                  <span class='glyphicon glyphicon-edit' />
+                </button>
+              </td>
+              <td> Farmácia </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+            </tr>
+            <tr>
+              <td>
+                <button type='button' 
+                  onclick='productDisplay(this);' 
+                  class='btn btn-default'>
+                  <span class='glyphicon glyphicon-edit' />
+                </button>
+              </td>
+              <td> Escola </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+            </tr>
+            <tr>
+              <td>
+                <button type='button' 
+                  onclick='productDisplay(this);' 
+                  class='btn btn-default'>
+                  <span class='glyphicon glyphicon-edit' />
+                </button>
+              </td>
+              <td> Petshop </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+              <td> 0 </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            Formulário para Inserir Dados
+          </div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label for="productname">
+                Tipo de Estabelecimento
+              </label>
+              <input type="text"
+                     class="form-control"
+                     value="Adicionar Estabelecimento"
+                     id="productname" />
+            </div>
+            <div class="form-group">
+              <label for="norte">
+                Norte
+              </label>
+              <input type="number"
+                     class="form-control"
+                     value=0
+                     id="norte" />
+            </div>
+            <div class="form-group">
+              <label for="sul">
+                Sul
+              </label>
+              <input type="number"
+                     class="form-control"
+                     value=0
+                     id="sul" />
+            </div>
+            <div class="form-group">
+              <label for="leste">
+                leste
+              </label>
+              <input type="number"
+                     class="form-control"
+                     value=0
+                     id="leste" />
+            </div>
+            <div class="form-group">
+              <label for="oeste">
+                Oeste 
+              </label>
+              <input type="number"
+                     class="form-control"
+                     value=0
+                     id="oeste" />
+            </div>
+            <div class="form-group">
+              <label for="centro">
+                Centro 
+              </label>
+              <input type="number"
+                     class="form-control"
+                     value=0
+                     id="centro" />
+            </div>
+          </div>
+          <div class="panel-footer">
+            <div class="row">
+              <div class="col-xs-6">
+                <button type="button" id="updateButton"
+                        class="btn btn-primary"
+                        onclick="productUpdate();">
+                  Adicionar
+                </button>
+              </div>
+              <div class="col-xs-6">
+                <button type="button" id="exportar"
+                        class="btn btn-primary">
+                        Exportar para o Excel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src:"https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $("#exportar").click(function(e){
+        e.preventDefault();
+        var divTabela = document.getElementById('productTable');
+        var dados = new Blob(['\ufeff'+ divTabela.outerHTML],{type: 'application/vnd.ms-excel'});
+        var url = window.URL.createObjectURL(dados);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'Formulario_Tabela'
+
+        a.click();
+      });
+    });
+    // Current product being edited
+    var editRow = null;
+
+    function productDisplay(ctl) {
+      editRow = $(ctl).parents("tr");
+      var cols = editRow.children("td");
+
+      $("#productname").val($(cols[1]).text());
+      $("#norte").val($(cols[2]).text());
+      $("#sul").val($(cols[3]).text());
+      $("#leste").val($(cols[4]).text());
+      $("#oeste").val($(cols[4]).text());
+      $("#centro").val($(cols[4]).text());
+
+      // Change Update Button Text
+      $("#updateButton").text("Atualizar");
+    }
+
+    function productUpdate() {
+      if ($("#updateButton").text() == "Atualizar") {
+        productUpdateInTable();
+      }
+      else {
+        productAddToTable();
+      }
+
+      // Clear form fields
+      formClear();
+
+      // Focus to product name field
+      $("#productname").focus();
+    }
+
+    // Add product to <table>
+    function productAddToTable() {
+      // First check if a <tbody> tag exists, add one if not
+      if ($("#productTable tbody").length == 0) {
+        $("#productTable").append("<tbody></tbody>");
+      }
+
+      // Append product to table
+      $("#productTable tbody").append(
+        productBuildTableRow());
+    }
+
+    // Update product in <table>
+    function productUpdateInTable() {
+      // Add changed product to table
+      $(editRow).after(productBuildTableRow());
+
+      // Remove original product
+      $(editRow).remove();
+
+      // Clear form fields
+      formClear();
+
+      // Change Update Button Text
+      $("#updateButton").text("Adicionar");
+    }
+
+    // Build a <table> row of Product data
+    function productBuildTableRow() {
+      var ret =
+      "<tr>" +
+        "<td>" +
+          "<button type='button' " +
+                  "onclick='productDisplay(this);' " +
+                  "class='btn btn-default'>" +
+                  "<span class='glyphicon glyphicon-edit' />" +
+          "</button>" +
+        "</td>" +
+        "<td>" + $("#productname").val() + "</td>" +
+        "<td>" + $("#norte").val() + "</td>" +
+        "<td>" + $("#sul").val() + "</td>" +
+        "<td>" + $("#leste").val() + "</td>" +
+        "<td>" + $("#oeste").val() + "</td>" +
+        "<td>" + $("#centro").val() + "</td>" +
+        "<td>" +
+          "<button type='button' " +
+                  "onclick='productDelete(this);' " +
+                  "class='btn btn-default'>" +
+                  "<span class='glyphicon glyphicon-remove' />" +
+          "</button>" +
+        "</td>" +
+      "</tr>"
+
+      return ret;
+    }
+
+    // Delete product from <table>
+    function productDelete(ctl) {
+      $(ctl).parents("tr").remove();
+    }
+
+    // Clear form fields
+    function formClear() {
+      $("#productname").val("");
+      $("#norte").val("");
+      $("#sul").val("");
+      $("#leste").val("");
+      $("#oeste").val("");
+      $("#centro").val("");
+    }
+  </script>
+</body>
+</html>
